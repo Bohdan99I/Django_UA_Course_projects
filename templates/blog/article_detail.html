@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} - Блог{% endblock %}
+
+{% block content %}
+<a href="{% url 'article_list' %}" class="back-link">← Повернутися до всіх статей</a>
+
+<article class="article-card">
+    <h2>{{ article.title }}</h2>
+    <div class="article-meta">
+        Опубліковано: {{ article.published_date|date:"d.m.Y H:i" }}
+        {% if article.updated_date != article.created_date %}
+            | Оновлено: {{ article.updated_date|date:"d.m.Y H:i" }}
+        {% endif %}
+    </div>
+
+    <div class="article-content" style="margin-top: 1.5rem; white-space: pre-line;">
+        {{ article.content }}
+    </div>
+
+    {% if article.tags.all %}
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+            <h3 style="margin-bottom: 1rem; color: #2c3e50;">Теги:</h3>
+            <div class="article-tags">
+                {% for tag in article.tags.all %}
+                    <a href="{% url 'article_list' %}?tag={{ tag.slug }}" class="tag">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</article>
+{% endblock %}

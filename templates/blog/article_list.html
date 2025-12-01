@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Всі статті - Блог{% endblock %}
+
+{% block content %}
+<div class="tag-filter">
+    <h3>Фільтрувати за тегами:</h3>
+    <div class="tag-list">
+        <a href="{% url 'article_list' %}" class="tag {% if not selected_tag %}active{% endif %}">Всі статті</a>
+        {% for tag in all_tags %}
+            <a href="?tag={{ tag.slug }}" class="tag {% if selected_tag == tag %}active{% endif %}">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+{% if selected_tag %}
+    <p style="margin-bottom: 1rem; color: #555;">
+        Відображаються статті з тегом: <strong>{{ selected_tag.name }}</strong>
+        <a href="{% url 'article_list' %}" style="color: #3498db; margin-left: 1rem;">Скасувати фільтр</a>
+    </p>
+{% endif %}
+
+{% if page_obj %}
+    {% for article in page_obj %}
+        <article class="article-card">
+            <h2><a href="{% url 'article_detail' article.slug %}">{{ article.title }}</a></h2>
+            <div class="article-meta">
+                Опубліковано: {{ article.published_date|date:"d.m.Y H:i" }}
+            </div>
+            <div class="article-content">
+                {{ article.content|truncatewords:50 }}
+            </div>
+            {% if article.tags.all %}
+                <div class="article-tags">
+                    {% for tag in article.tags.all %}
+                        <a href="?tag={{ tag.slug }}" class="tag">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div style="margin-top: 1rem;">
+                <a href="{% url 'article_detail' article.slug %}" class="btn">Читати далі →</a>
+            </div>
+        </article>
+    {% endfor %}
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">« Перша</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">‹ Попередня</a>
+            {% endif %}
+
+            <span class="current">
+                Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">Наступна ›</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if selected_tag %}&tag={{ selected_tag.slug }}{% endif %}">Остання »</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% else %}
+    <div class="article-card">
+        <p>Статей поки немає.</p>
+    </div>
+{% endif %}
+{% endblock %}
