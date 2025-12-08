@@ -34,3 +34,15 @@ blog_project/         # Основний проект
 ├── urls.py          # Головні URL
 ├── wsgi.py          # WSGI конфігурація
 └── asgi.py          # ASGI конфігурація
+
+blog/                # Застосунок блогу
+├── models.py        # Моделі (Article, Tag)
+├── views.py         # Відображення (article_list, article_detail)
+├── urls.py          # URL маршрути блогу
+└── admin.py         # Налаштування адмін-панелі
+
+templates/           # Шаблони
+├── base.html        # Базовий шаблон
+└── blog/
+    ├── article_list.html    # Список статей
+    └── article_detail.html  # Деталі статті
