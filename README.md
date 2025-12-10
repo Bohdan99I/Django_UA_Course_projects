@@ -29,6 +29,7 @@
 
 ## СТРУКТУРА ПРОЕКТУ:
 
+```
 blog_project/         # Основний проект
 ├── settings.py       # Налаштування проекту
 ├── urls.py          # Головні URL
@@ -46,3 +47,4 @@ templates/           # Шаблони
 └── blog/
     ├── article_list.html    # Список статей
     └── article_detail.html  # Деталі статті
+```
